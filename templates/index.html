@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传与管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .upload-form {
+            margin-bottom: 20px;
+        }
+        .file-list {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .file-list th, .file-list td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .file-list th {
+            background-color: #f2f2f2;
+        }
+        .file-list td a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            padding: 8px 16px;
+            margin: 0 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background-color: #45a049;
+        }
+        .file-action {
+            color: #007bff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>文件上传与管理</h1>
+
+        <!-- 文件上传表单 -->
+        <div class="upload-form">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <!-- 添加 CSRF 令牌 -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="file" name="file" required>
+                <button type="submit">上传文件</button>
+            </form>
+        </div>
+
+        <!-- 文件列表 -->
+        <table class="file-list">
+            <thead>
+                <tr>
+                    <th>文件名</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                    <tr>
+                        <td><a href="{{ url_for('download_file', filename=file) }}" target="_blank">{{ file }}</a></td>
+                        <td>
+                            <a class="file-action" href="javascript:void(0)" onclick="copyLink('{{ file }}')">复制下载链接</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            {% if current_page > 1 %}
+                <a href="?page={{ current_page - 1 }}">上一页</a>
+            {% endif %}
+            {% for page_num in range(1, total_pages + 1) %}
+                <a href="?page={{ page_num }}" class="{{ 'active' if page_num == current_page else '' }}">{{ page_num }}</a>
+            {% endfor %}
+            {% if current_page < total_pages %}
+                <a href="?page={{ current_page + 1 }}">下一页</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function copyLink(filename) {
+        const link = "https://ele.cx/uploads/" + filename;
+            navigator.clipboard.writeText(link).then(() => {
+                alert("下载链接已复制: " + link);
+            });
+        }
+    </script>
+
+</body>
+</html>

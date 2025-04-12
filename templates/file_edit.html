@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit File: {{ filename }}</h1>
+        <form method="POST" action="{{ url_for('edit_file', filename=filename) }}">
+            <!-- 添加 CSRF 令牌字段 -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <textarea name="content" rows="15" style="width: 100%;">{{ content }}</textarea>
+            <button type="submit">Save Changes</button>
+        </form>
+        <a href="{{ url_for('file_list') }}" style="display: block; margin-top: 20px;">Back to File List</a>
+    </div>
+</body>
+</html>
+

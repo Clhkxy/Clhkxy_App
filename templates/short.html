@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>短链接生成</title>
+    <style>
+        /* 简单的样式，可以根据需求调整 */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #436f9c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1>短链接生成</h1>
+    <form method="POST">
+        <!-- 添加 CSRF 令牌字段 -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="text" name="long_url" placeholder="输入长URL" required>
+        <input type="text" name="custom_suffix" placeholder="输入URL附属信息（可为空）">
+        <button type="submit">生成短链接</button>
+    </form>
+
+    {% if short_url %}
+        <h2>短链接: <a href="/short/{{ short_url }}" target="_blank">{{ short_url }}</a></h2>
+        <!-- 复制按钮 -->
+        <button onclick="copyToClipboard()">复制短链接</button>
+
+        <script>
+            function copyToClipboard() {
+                var copyText = document.querySelector("a");
+                var textArea = document.createElement("textarea");
+                textArea.value = copyText.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                alert("Short URL copied to clipboard!");
+            }
+        </script>
+    {% endif %}
+    </div>
+</body>
+</html>
+
