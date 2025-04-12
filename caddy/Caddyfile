@@ -1,0 +1,4 @@
+example.com {
+    @flaskRoutes path / /file_index /upload /uploads/* /copy_link/* /login /Clhkxy_Register /change_password /short /short/* /files /files/* /2fa /2fa/* /logout /some_route
+    reverse_proxy @flaskRoutes http://localhost:5000
+}
