@@ -95,7 +95,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @Clhkxy_App.errorhandler(RequestEntityTooLarge)
-def handle_request_entity_too_large(error):
+def handle_request_entity_too_large():
     return "文件太大，请上传小于 100MB 的文件。", 413
 
 # 原 Clhkxy_App.py 中的路由
