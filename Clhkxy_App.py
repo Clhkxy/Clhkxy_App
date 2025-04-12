@@ -334,4 +334,4 @@ def some_route():
 
 
 if __name__ == "__main__":
-    Clhkxy_App.run(debug=True)
+    Clhkxy_App.run(debug=True,host="0.0.0.0", port=5000)
