@@ -213,7 +213,7 @@ def change_password():
     return render_template("change_password.html")
 
 # 原 Short.py 中的路由：主页，显示输入框
-@Clhkxy_App.route("/short/", methods=["GET", "POST"])
+@Clhkxy_App.route("/short", methods=["GET", "POST"])
 def short_index():
     if request.method == "POST":
         long_url = request.form["long_url"]
